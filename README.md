@@ -19,6 +19,14 @@ At later launches, the tool rediscovers the selected device by its local device 
 
 The page shows the DA attributes returned by the current library/device combination, raw program and water-level codes, raw response body, error code, and a rolling water-level-code chart. The target interval is one second; actual timing depends on the device reply and can be slower. A returned `wash_level` is a controller setting code, not measured water volume. The LAN status API does not expose capacitive-electrode state, analog pressure-sensor readings, or motor current.
 
+## Optional multi-appliance overview
+
+The washer dashboard above remains the detailed DA washer diagnostic. For a household overview, `initialize_home_devices.py` and `home_monitor.py` provide a separate generic page that can show multiple discovered device types for which the installed `midea-local` version has a registered parser. Select devices once; the monitor queries each device independently and renders only the attributes that its parser actually returns. The generic page has no device controls and listens on localhost only. Its CSV is long-form (`one row per device attribute`) and its JSONL stores one status snapshot per device sample.
+
+On Windows, run `initialize_home_devices.py` from the project virtual environment once, then double-click `start_home_monitor.bat`. The overview polls every five seconds by default; this can be adjusted with `--interval`. This is a generic parser-backed view, not proof that every appliance type or protocol is compatible. Discovery does not supply cloud credentials: devices that require a token/key will report a connection/authentication failure, and the monitor does not attempt cloud login or credential bypass. Per-device raw protocol fields and specialized plots remain in the corresponding appliance-specific diagnostics.
+
+The household overview has software-only regression coverage. It has not been exercised against a multi-appliance LAN or appliances requiring authentication.
+
 For a file-based sampler, first initialize the same local device file, then run `run_diagnosis.py` with an allowed label such as `idle` or `wash_abnormal`. The sampler is also read-only. Run `plot_diagnosis.py` to render `water_level_trend.svg` from local CSV files. The chart includes only rows with valid timestamps and raw water-level codes; its stage title comes from recorded `progress` values when available.
 
 ## Privacy and safety

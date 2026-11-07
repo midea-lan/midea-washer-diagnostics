@@ -6,6 +6,9 @@ diagnosis*.csv
 diagnosis*.jsonl
 diagnosis*.log
 live_diagnosis.*
+home_devices.json
+home_monitor.csv
+home_monitor.jsonl
 *.log
 video/scene_*.svg
 video/concat.txt
